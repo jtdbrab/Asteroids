@@ -7,5 +7,6 @@ wheels/
 *.egg-info
 .pyproject.toml
 uv.lock
+game_state.jsonl
 # Virtual environments
 .venv
