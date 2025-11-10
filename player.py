@@ -43,8 +43,10 @@ class Player(CircleShape):
             self.move(- (dt))
         if keys[pygame.K_SPACE]:
             self.shoot()
+        self.timer -= dt
     
     def shoot(self):
         if self.timer <= 0:
             shot = Shot(self.position.x, self.position.y)
             shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+            self.timer = PLAYER_SHOOT_COOLDOWN_SECONDS
