@@ -9,6 +9,17 @@ _FPS = 60
 _MAX_SECONDS = 16
 _SPRITE_SAMPLE_LIMIT = 10  # Maximum number of sprites to log per group
 
+import inspect
+import json
+import math
+from datetime import datetime
+
+__all__ = ["log_state", "log_event"]
+
+_FPS = 60
+_MAX_SECONDS = 16
+_SPRITE_SAMPLE_LIMIT = 10  # Maximum number of sprites to log per group
+
 _frame_count = 0
 _state_log_initialized = False
 _event_log_initialized = False
@@ -17,13 +28,10 @@ _start_time = datetime.now()
 
 def log_state():
     global _frame_count, _state_log_initialized
-    now = datetime.now()
-    if math.floor((now - _start_time).total_seconds()) == 0:
-        return
 
     # Stop logging after `_MAX_SECONDS` seconds
-   # if _frame_count > _FPS * _MAX_SECONDS:
-    #    return
+    if _frame_count > _FPS * _MAX_SECONDS:
+        return
 
     # Take a snapshot approx. once per second
     _frame_count += 1
@@ -132,8 +140,7 @@ def log_event(event_type, **details):
     }
 
     mode = "w" if not _event_log_initialized else "a"
-    with open("game_state.jsonl", mode) as f:
-        f.write(json.dumps(entry) + "\n")
-        f.flush()
+    with open("game_events.jsonl", mode) as f:
+        f.write(json.dumps(event) + "\n")
 
     _event_log_initialized = True
